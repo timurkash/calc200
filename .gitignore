@@ -16,9 +16,10 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-.idea/.gitignore
-.idea/awesomeProject7.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
+.idea
+#.idea/.gitignore
+#.idea/awesomeProject7.iml
+#.idea/misc.xml
+#.idea/modules.xml
+#.idea/vcs.xml
 #main.go

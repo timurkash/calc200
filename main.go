@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -15,11 +16,10 @@ const (
 func main() {
 	fmt.Println()
 	for i := 0; i < int(math.Pow(r, 9)); i++ {
-		//fmt.Println(getDigits(i))
-		exp := expr(getDigits(i))
-		calc := calc(exp)
+		expr := fmt.Sprintf("9%s8%s7%s6%s5%s4%s3%s2%s1%s0", getSign(getDigits(i))...)
+		calc := calc(expr)
 		if calc == 200 {
-			fmt.Println(exp, "=", calc)
+			fmt.Println(calc, "=", expr)
 		}
 	}
 }
@@ -37,28 +37,24 @@ func getDigits(t int) string {
 	return fmt.Sprintf("%09s", str)
 }
 
-func expr(i string) string {
-	return fmt.Sprintf("9%s8%s7%s6%s5%s4%s3%s2%s1%s0",
-		getSign(i, 0),
-		getSign(i, 1),
-		getSign(i, 2),
-		getSign(i, 3),
-		getSign(i, 4),
-		getSign(i, 5),
-		getSign(i, 6),
-		getSign(i, 7),
-		getSign(i, 8))
+func mod(i int) (int, int) {
+	m := i % r
+	return (i - m) / r, m
 }
 
-func getSign(s string, pos int) string {
-	ch := s[pos : pos+1]
-	if ch == "1" {
-		return "-"
+func getSign(s string) []interface{} {
+	t := strings.Split(s, "")
+	b := make([]interface{}, 9)
+	for i := range t {
+		if t[i] == "0" {
+			b[i] = ""
+		} else if t[i] == "1" {
+			b[i] = " - "
+		} else if t[i] == "2" {
+			b[i] = " + "
+		}
 	}
-	if ch == "2" {
-		return "+"
-	}
-	return ""
+	return b
 }
 
 func calc(exp string) int {
@@ -74,9 +70,4 @@ func handleErr(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func mod(i int) (int, int) {
-	m := i % r
-	return (i - m) / r, m
 }
