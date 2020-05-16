@@ -10,13 +10,19 @@ import (
 )
 
 const (
-	r = 3
+	r      = 3
+	k      = 9
+	format = "9%s8%s7%s6%s5%s4%s3%s2%s1%s0"
+)
+
+var (
+	k_ = strconv.Itoa(k)
 )
 
 func main() {
 	fmt.Println()
-	for i := 0; i < int(math.Pow(r, 9)); i++ {
-		expr := fmt.Sprintf("9%s8%s7%s6%s5%s4%s3%s2%s1%s0", getSign(getDigits(i))...)
+	for i := 0; i < int(math.Pow(r, k)); i++ {
+		expr := fmt.Sprintf(format, getSign(getDigits(i))...)
 		calc := calc(expr)
 		if calc == 200 {
 			fmt.Println(calc, "=", expr)
@@ -34,7 +40,7 @@ func getDigits(t int) string {
 			break
 		}
 	}
-	return fmt.Sprintf("%09s", str)
+	return fmt.Sprintf("%0"+k_+"s", str)
 }
 
 func mod(i int) (int, int) {
@@ -44,7 +50,7 @@ func mod(i int) (int, int) {
 
 func getSign(s string) []interface{} {
 	t := strings.Split(s, "")
-	b := make([]interface{}, 9)
+	b := make([]interface{}, k)
 	for i := range t {
 		if t[i] == "0" {
 			b[i] = ""
